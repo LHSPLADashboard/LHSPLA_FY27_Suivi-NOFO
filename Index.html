@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LHSPLA FY27 — Suivi Livrables & Soumission</title>
+<style>
+  :root{
+    --rouge:#C0152A; --bleu:#0B3A6E; --vert:#1B8A5A; --orange:#E08B00;
+    --gris:#f4f6f9; --carte:#ffffff; --texte:#1a2230; --ligne:#e2e8f0; --gris-na:#8892a0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    background:var(--gris);color:var(--texte);line-height:1.45;padding:14px;max-width:840px;margin:0 auto}
+  header{background:linear-gradient(135deg,var(--bleu),#0a2d55);color:#fff;
+    border-radius:16px;padding:20px 18px;text-align:center;box-shadow:0 4px 14px rgba(11,58,110,.25)}
+  header h1{font-size:1.12rem;letter-spacing:.3px}
+  header .sous{font-size:.8rem;opacity:.85;margin-top:4px}
+
+  .compteur{margin:16px 0;background:var(--carte);border-radius:16px;padding:22px 16px;
+    text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.06);border:1px solid var(--ligne)}
+  .compteur .jj{font-size:3.6rem;font-weight:800;color:var(--rouge);line-height:1}
+  .compteur .lbl{font-size:.9rem;text-transform:uppercase;letter-spacing:2px;color:var(--bleu);margin-top:2px}
+  .compteur .date{margin-top:8px;font-size:.9rem;color:#5a6472}
+
+  .retro{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:12px}
+  .retro .unite{background:linear-gradient(135deg,var(--bleu),#0a2d55);color:#fff;border-radius:10px;
+    padding:8px 4px;min-width:56px;text-align:center;box-shadow:0 2px 6px rgba(11,58,110,.25)}
+  .retro .val{display:block;font-size:1.7rem;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+  .retro .val.sec{color:#ffd0d5}
+  .retro .cle{display:block;font-size:.6rem;text-transform:uppercase;letter-spacing:1px;opacity:.8;margin-top:3px}
+  .retro .sep{font-size:1.5rem;font-weight:800;color:var(--rouge);align-self:flex-start;margin-top:6px}
+  @media(max-width:400px){.retro .unite{min-width:46px}.retro .val{font-size:1.35rem}}
+
+  .circuit{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:14px;flex-wrap:wrap}
+  .etape{background:#eef2f8;border:1px solid var(--ligne);border-radius:10px;padding:7px 12px;font-size:.76rem;font-weight:600;color:var(--bleu);text-align:center}
+  .etape .r{display:block;font-size:.66rem;font-weight:500;color:#5a6472;margin-top:1px}
+  .etape.actif{background:var(--bleu);color:#fff}.etape.actif .r{color:#cdd8e8}
+  .fleche{color:var(--rouge);font-weight:800;font-size:1rem}
+
+  .barre-wrap{margin-top:16px;background:#eef1f6;border-radius:10px;height:15px;overflow:hidden}
+  .barre{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--vert),#26b56f);transition:width .6s}
+  .pct{font-size:.8rem;color:#5a6472;margin-top:6px}
+  .stats{display:flex;justify-content:center;gap:18px;margin-top:12px;flex-wrap:wrap}
+  .stat{text-align:center}.stat .n{font-size:1.4rem;font-weight:800}.stat .s{font-size:.7rem;color:#5a6472;text-transform:uppercase;letter-spacing:.5px}
+  .majTop{margin-top:14px;padding-top:10px;border-top:1px dashed var(--ligne);font-size:.76rem;color:#5a6472;font-weight:600}
+  .n.tv{color:var(--vert)}.n.tc{color:var(--orange)}.n.tn{color:var(--gris-na)}
+
+  h2{font-size:.95rem;color:var(--bleu);margin:22px 0 10px;padding-left:10px;border-left:4px solid var(--rouge)}
+
+  .carte{background:var(--carte);border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.05);border:1px solid var(--ligne);overflow:hidden}
+  .lgn{display:flex;align-items:center;gap:11px;padding:11px 12px;border-bottom:1px solid var(--ligne)}
+  .lgn:last-child{border-bottom:none}
+  .num{flex-shrink:0;width:24px;height:24px;border-radius:7px;background:#eef2f8;color:var(--bleu);
+    display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:700}
+  .nom{flex:1;font-size:.9rem;font-weight:600}
+  .nom small{display:block;font-weight:400;color:#5a6472;font-size:.72rem;margin-top:1px}
+  .st{flex-shrink:0;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap}
+  .st.t{background:#e5f5ec;color:var(--vert)}
+  .st.c{background:#fff3dd;color:var(--orange)}
+  .st.na{background:#eef1f4;color:var(--gris-na)}
+
+  .legende{display:flex;flex-wrap:wrap;gap:14px;justify-content:center;margin:12px 0 2px;font-size:.75rem;color:#5a6472}
+  .legende span{display:flex;align-items:center;gap:5px}
+  .dot{width:12px;height:12px;border-radius:50%;display:inline-block}
+
+  .confirm{background:#fff8e6;border:1px solid #f0d98a;border-radius:12px;padding:12px 14px;margin-top:14px}
+  .confirm .t{font-weight:700;color:var(--orange);font-size:.85rem}
+  .confirm ul{margin:6px 0 0 18px;font-size:.82rem;color:#5a6472}
+
+  footer{text-align:center;margin:22px 0 6px;font-size:.72rem;color:#8892a0}
+  .maj{background:var(--bleu);color:#fff;display:inline-block;padding:3px 12px;border-radius:20px;font-size:.72rem}
+
+  /* ===== RESPONSIVE ===== */
+  /* Tablette */
+  @media(max-width:640px){
+    body{padding:10px}
+    header h1{font-size:1.02rem}
+    .compteur .jj{font-size:3rem}
+    .circuit{gap:4px}
+    .etape{padding:6px 9px;font-size:.72rem}
+    h2{font-size:.9rem}
+  }
+  /* Mobile */
+  @media(max-width:480px){
+    body{padding:8px}
+    header{padding:16px 12px;border-radius:14px}
+    header h1{font-size:.94rem}
+    header .sous{font-size:.72rem}
+    .compteur{padding:18px 12px}
+    .compteur .jj{font-size:2.6rem}
+    .compteur .lbl{font-size:.78rem;letter-spacing:1px}
+    .compteur .date{font-size:.8rem}
+    /* Circuit vertical sur mobile */
+    .circuit{flex-direction:column;gap:4px}
+    .circuit .fleche{transform:rotate(90deg)}
+    .etape{width:100%;max-width:240px}
+    /* Stats resserrées */
+    .stats{gap:12px}.stat .n{font-size:1.2rem}
+    /* Lignes livrables : badge de statut passe dessous */
+    .lgn{flex-wrap:wrap;gap:8px;padding:10px}
+    .nom{flex:1 1 100%;font-size:.86rem}
+    .num{width:22px;height:22px;font-size:.72rem}
+    .st{margin-left:34px;font-size:.68rem;padding:3px 9px}
+    .legende{gap:10px;font-size:.72rem}
+  }
+  /* Très petit écran */
+  @media(max-width:360px){
+    .compteur .jj{font-size:2.2rem}
+    .retro .unite{min-width:40px;padding:6px 3px}
+    .retro .val{font-size:1.15rem}
+    .retro .cle{font-size:.55rem}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>📋 LHSPLA FY27 — Appel à propositions A149FY26</h1>
+  <div class="sous">NPSP-CI · Cooperative Agreement GHSD/DoS · 1 761 680 USD</div>
+</header>
+
+<div class="compteur">
+  <div class="jj" id="jj">J-4</div>
+  <div class="lbl">avant soumission Grants</div>
+  <div class="retro" id="retro">
+    <div class="unite"><span class="val" id="uJ">04</span><span class="cle">Jours</span></div>
+    <div class="sep">:</div>
+    <div class="unite"><span class="val" id="uH">00</span><span class="cle">Heures</span></div>
+    <div class="sep">:</div>
+    <div class="unite"><span class="val" id="uM">00</span><span class="cle">Min</span></div>
+    <div class="sep">:</div>
+    <div class="unite"><span class="val sec" id="uS">00</span><span class="cle">Sec</span></div>
+  </div>
+  <div class="date">Échéance : mardi 14 juillet 2026 · 19H59 GMT</div>
+
+  <div class="circuit">
+    <div class="etape actif">Livrables entités<span class="r">Transmis ce jour</span></div>
+    <span class="fleche">→</span>
+    <div class="etape actif">GOR Damas BROU<span class="r">Pour avis</span></div>
+    <span class="fleche">→</span>
+    <div class="etape">Grants<span class="r">Soumission</span></div>
+  </div>
+
+  <div class="barre-wrap"><div class="barre" id="barre" style="width:64%"></div></div>
+  <div class="pct">64 % des livrables applicables transmis (9/14)</div>
+
+  <div class="stats">
+    <div class="stat"><div class="n tv">9</div><div class="s">Transmis</div></div>
+    <div class="stat"><div class="n tc">5</div><div class="s">En cours</div></div>
+    <div class="stat"><div class="n tn">1</div><div class="s">N/A</div></div>
+  </div>
+  <div class="majTop" id="majTop">🕓 Mise à jour : —</div>
+</div>
+
+<div class="legende">
+  <span><i class="dot" style="background:var(--vert)"></i>Transmis au COR</span>
+  <span><i class="dot" style="background:var(--orange)"></i>En cours</span>
+  <span><i class="dot" style="background:var(--gris-na)"></i>Non applicable</span>
+</div>
+
+<h2>📦 Point sur les 15 livrables (NOFO)</h2>
+<div class="carte">
+  <div class="lgn"><div class="num">1</div><div class="nom">Executive Summary</div><div class="st t">Transmis</div></div>
+  <div class="lgn"><div class="num">2</div><div class="nom">Proposal Narrative <small>≤ 10 pages</small></div><div class="st t">Transmis</div></div>
+  <div class="lgn"><div class="num">3</div><div class="nom">M&E Plan / AMELP <small>≤ 4 pages</small></div><div class="st t">Transmis</div></div>
+  <div class="lgn"><div class="num">4</div><div class="nom">SF-424 / 424A / 424B</div><div class="st t">Transmis</div></div>
+  <div class="lgn"><div class="num">5</div><div class="nom">Detailed Program Budget <small>Excel — template à confirmer (GOR)</small></div><div class="st c">En cours</div></div>
+  <div class="lgn"><div class="num">6</div><div class="nom">Budget Justification Narrative</div><div class="st t">Transmis</div></div>
+  <div class="lgn"><div class="num">7</div><div class="nom">Annual Work Plan (AWP) FY27</div><div class="st c">En cours</div></div>
+  <div class="lgn"><div class="num">8</div><div class="nom">Milestone Plan <small>Supprimé — bascule cost-reimbursable</small></div><div class="st na">Non applicable</div></div>
+  <div class="lgn"><div class="num">9</div><div class="nom">Proposed Schedule / Timeline <small>Horizon 6 mois — cible février 2027</small></div><div class="st c">En cours</div></div>
+  <div class="lgn"><div class="num">10</div><div class="nom">Key Personnel <small>≤ 2 p. — CV Dr. AYEMON en attente</small></div><div class="st c">En cours</div></div>
+  <div class="lgn"><div class="num">11</div><div class="nom">Risk Analysis / Security Plan <small>≤ 2 pages</small></div><div class="st c">En cours</div></div>
+  <div class="lgn"><div class="num">12</div><div class="nom">Sustainability Plan</div><div class="st t">Transmis</div></div>
+  <div class="lgn"><div class="num">13</div><div class="nom">Project Partners</div><div class="st t">Transmis</div></div>
+  <div class="lgn"><div class="num">14</div><div class="nom">Acronym List</div><div class="st c">En cours</div></div>
+  <div class="lgn"><div class="num">15</div><div class="nom">Branding and Marking Plan</div><div class="st c">En cours</div></div>
+</div>
+
+<footer>
+  <span class="maj" id="maj">Mis à jour le 10/07/2026</span>
+  <div style="margin-top:8px">COP LHSPLA · Dr Codo — Suivi interne · à publier sur le groupe WhatsApp</div>
+</footer>
+
+<script>
+  (function(){
+    // Cible : 14/07/2026 19:59:59 GMT (UTC)
+    const cible = new Date(Date.UTC(2026,6,14,19,59,59));
+    const jj = document.getElementById('jj');
+    const uJ=document.getElementById('uJ'), uH=document.getElementById('uH'),
+          uM=document.getElementById('uM'), uS=document.getElementById('uS');
+    const p2=n=>String(n).padStart(2,'0');
+
+    function tick(){
+      const diff = cible - new Date();
+      if(diff <= 0){
+        jj.textContent = "⏰ Échéance atteinte";
+        jj.style.color = 'var(--rouge)';
+        uJ.textContent=uH.textContent=uM.textContent=uS.textContent='00';
+        clearInterval(timer);
+        return;
+      }
+      const s = Math.floor(diff/1000);
+      const jours = Math.floor(s/86400);
+      const heures = Math.floor((s%86400)/3600);
+      const mins = Math.floor((s%3600)/60);
+      const secs = s%60;
+      jj.textContent = 'J-'+jours;
+      uJ.textContent = p2(jours);
+      uH.textContent = p2(heures);
+      uM.textContent = p2(mins);
+      uS.textContent = p2(secs);
+    }
+    tick();
+    const timer = setInterval(tick,1000);
+
+    // Date + heure de mise à jour
+    const now = new Date();
+    const optD = {weekday:'long',day:'2-digit',month:'long',year:'numeric'};
+    const optH = {hour:'2-digit',minute:'2-digit'};
+    const dTxt = now.toLocaleDateString('fr-FR',optD);
+    const hTxt = now.toLocaleTimeString('fr-FR',optH);
+    const mt = document.getElementById('majTop');
+    if(mt) mt.textContent = '🕓 Mise à jour : '+dTxt+' à '+hTxt;
+    const opt = {day:'2-digit',month:'2-digit',year:'numeric'};
+    document.getElementById('maj').textContent = 'Mis à jour le '+now.toLocaleDateString('fr-FR',opt)+' à '+hTxt;
+  })();
+</script>
+
+</body>
+</html>
