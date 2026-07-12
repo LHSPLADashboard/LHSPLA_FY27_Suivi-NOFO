@@ -3,7 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>LHSPLA FY27 — Suivi interactif</title>
+<title>LHSPLA FY27 — Suivi Livrables & Soumission</title>
+<meta property="og:title" content="LHSPLA FY27 — Point livrables & soumission Grants">
+<meta property="og:description" content="Suivi COP · Échéance 14/07/2026 19H59 GMT">
 <style>
   :root{
     --rouge:#C0152A; --bleu:#0B3A6E; --vert:#1B8A5A; --orange:#E08B00;
@@ -45,8 +47,7 @@
   .n.tv{color:var(--vert)}.n.tc{color:var(--orange)}.n.tn{color:var(--gris-na)}
   .majTop{margin-top:14px;padding-top:10px;border-top:1px dashed var(--ligne);font-size:.76rem;color:#5a6472;font-weight:600}
 
-  h2{font-size:.95rem;color:var(--bleu);margin:22px 0 6px;padding-left:10px;border-left:4px solid var(--rouge)}
-  .aide{font-size:.76rem;color:#5a6472;margin:0 0 10px 14px}
+  h2{font-size:.95rem;color:var(--bleu);margin:22px 0 10px;padding-left:10px;border-left:4px solid var(--rouge)}
 
   .carte{background:var(--carte);border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.05);border:1px solid var(--ligne);overflow:hidden}
   .lgn{display:flex;align-items:center;gap:11px;padding:11px 12px;border-bottom:1px solid var(--ligne)}
@@ -55,9 +56,7 @@
     display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:700}
   .nom{flex:1;font-size:.9rem;font-weight:600}
   .nom small{display:block;font-weight:400;color:#5a6472;font-size:.72rem;margin-top:1px}
-  .st{flex-shrink:0;font-size:.72rem;font-weight:700;padding:5px 12px;border-radius:20px;white-space:nowrap;
-    cursor:pointer;border:none;transition:transform .1s;user-select:none}
-  .st:active{transform:scale(.94)}
+  .st{flex-shrink:0;font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:20px;white-space:nowrap}
   .st.t{background:#e5f5ec;color:var(--vert)}
   .st.c{background:#fff3dd;color:var(--orange)}
   .st.na{background:#eef1f4;color:var(--gris-na)}
@@ -66,14 +65,9 @@
   .legende span{display:flex;align-items:center;gap:5px}
   .dot{width:12px;height:12px;border-radius:50%;display:inline-block}
 
-  .barreOutils{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:14px}
-  .btn{font-size:.76rem;font-weight:600;padding:7px 14px;border-radius:20px;border:1px solid var(--ligne);
-    background:#fff;color:var(--bleu);cursor:pointer}
-  .btn:active{transform:scale(.96)}
-  .btn.reset{color:var(--rouge);border-color:#f2c4ca}
-
   footer{text-align:center;margin:22px 0 6px;font-size:.72rem;color:#8892a0}
   .maj{background:var(--bleu);color:#fff;display:inline-block;padding:3px 12px;border-radius:20px;font-size:.72rem}
+  .ver{display:inline-block;margin-left:6px;background:#eef1f4;color:#5a6472;padding:3px 10px;border-radius:20px;font-size:.7rem}
 
   @media(max-width:640px){body{padding:10px}header h1{font-size:1.02rem}.compteur .jj{font-size:3rem}.etape{padding:6px 9px;font-size:.72rem}h2{font-size:.9rem}}
   @media(max-width:480px){
@@ -81,8 +75,7 @@
     .compteur{padding:18px 12px}.compteur .jj{font-size:2.6rem}
     .circuit{flex-direction:column;gap:4px}.circuit .fleche{transform:rotate(90deg)}.etape{width:100%;max-width:240px}
     .stats{gap:12px}.stat .n{font-size:1.2rem}
-    .lgn{flex-wrap:wrap;gap:8px;padding:10px}.nom{flex:1 1 100%;font-size:.86rem}
-    .st{margin-left:34px}
+    .lgn{flex-wrap:wrap;gap:8px;padding:10px}.nom{flex:1 1 100%;font-size:.86rem}.st{margin-left:34px}
   }
   @media(max-width:360px){.compteur .jj{font-size:2.2rem}.retro .unite{min-width:40px;padding:6px 3px}.retro .val{font-size:1.15rem}}
 </style>
@@ -124,7 +117,7 @@
     <div class="stat"><div class="n tc" id="nC">0</div><div class="s">En cours</div></div>
     <div class="stat"><div class="n tn" id="nN">0</div><div class="s">N/A</div></div>
   </div>
-  <div class="majTop" id="majTop">🕓 Mise à jour : —</div>
+  <div class="majTop" id="majTop">🕓 —</div>
 </div>
 
 <div class="legende">
@@ -134,21 +127,26 @@
 </div>
 
 <h2>📦 Point sur les 15 livrables (NOFO)</h2>
-<p class="aide">👉 Touchez le badge de statut d'une ligne pour le faire basculer : Transmis → En cours → N/A. Les compteurs et la barre se mettent à jour automatiquement.</p>
 <div class="carte" id="liste"></div>
 
-<div class="barreOutils">
-  <button class="btn" id="btnCopie">📋 Copier le point (texte)</button>
-  <button class="btn reset" id="btnReset">↺ Réinitialiser</button>
+<div style="display:flex;justify-content:center;margin-top:14px">
+  <button id="btnCopie" style="font-size:.8rem;font-weight:600;padding:9px 18px;border-radius:22px;
+    border:none;background:var(--bleu);color:#fff;cursor:pointer">📋 Copier le point pour WhatsApp</button>
 </div>
 
 <footer>
-  <span class="maj" id="maj">Mis à jour le —</span>
-  <div style="margin-top:8px">COP LHSPLA · Dr Codo — Suivi interne · à publier sur le groupe WhatsApp</div>
+  <span class="maj" id="maj">—</span>
+  <div style="margin-top:8px">COP LHSPLA · Dr Codo — à publier sur le groupe WhatsApp</div>
 </footer>
 
 <script>
-  // ===== Données livrables (statut initial) =====
+  /* =========================================================
+     ⚙️  ZONE À MODIFIER À CHAQUE MISE À JOUR
+     - Changez "st" : "t" = Transmis, "c" = En cours, "na" = Non applicable
+     - Changez DATE_MAJ ci-dessous (facultatif : sinon date d'ouverture)
+     Puis ré-uploadez ce fichier sur Netlify (glisser-déposer).
+     ========================================================= */
+  const DATE_MAJ = "";  // ex: "11/07/2026 à 16h30" — laissez "" pour date automatique
   const LIVRABLES = [
     {n:1,  nom:"Executive Summary", sous:"", st:"t"},
     {n:2,  nom:"Proposal Narrative", sous:"≤ 10 pages", st:"t"},
@@ -156,9 +154,9 @@
     {n:4,  nom:"SF-424 / 424A / 424B", sous:"", st:"t"},
     {n:5,  nom:"Detailed Program Budget", sous:"Excel — template à confirmer (GOR)", st:"c"},
     {n:6,  nom:"Budget Justification Narrative", sous:"", st:"t"},
-    {n:7,  nom:"Annual Work Plan (AWP) FY27", sous:"", st:"c"},
+    {n:7,  nom:"Annual Work Plan (AWP) FY27", sous:"", st:"t"},
     {n:8,  nom:"Milestone Plan", sous:"Supprimé — bascule cost-reimbursable", st:"na"},
-    {n:9,  nom:"Proposed Schedule / Timeline", sous:"Horizon 6 mois — cible février 2027", st:"c"},
+    {n:9,  nom:"Proposed Schedule / Timeline", sous:"Horizon 6 mois — cible février 2027", st:"t"},
     {n:10, nom:"Key Personnel", sous:"≤ 2 pages", st:"c"},
     {n:11, nom:"Risk Analysis / Security Plan", sous:"≤ 2 pages", st:"c"},
     {n:12, nom:"Sustainability Plan", sous:"", st:"t"},
@@ -166,109 +164,74 @@
     {n:14, nom:"Acronym List", sous:"", st:"c"},
     {n:15, nom:"Branding and Marking Plan", sous:"", st:"c"}
   ];
-  const CLE_STOCK = "lhspla_fy27_statuts";
-  const ORDRE = ["t","c","na"];
+  /* ===== FIN ZONE À MODIFIER ===== */
+
   const LABEL = {t:"Transmis", c:"En cours", na:"Non applicable"};
 
-  // Restaurer un état sauvegardé (si présent)
-  let etat = LIVRABLES.map(l=>l.st);
-  try{
-    const sv = JSON.parse(localStorage.getItem(CLE_STOCK));
-    if(Array.isArray(sv) && sv.length===LIVRABLES.length) etat = sv;
-  }catch(e){}
-
-  function sauver(){ try{ localStorage.setItem(CLE_STOCK, JSON.stringify(etat)); }catch(e){} }
-
-  function rendre(){
+  (function rendre(){
     const liste = document.getElementById('liste');
-    liste.innerHTML = '';
-    LIVRABLES.forEach((l,i)=>{
-      const st = etat[i];
-      const lgn = document.createElement('div');
-      lgn.className = 'lgn';
-      lgn.innerHTML =
-        '<div class="num">'+l.n+'</div>'+
+    let t=0,c=0,na=0;
+    LIVRABLES.forEach(l=>{
+      if(l.st==='t')t++; else if(l.st==='c')c++; else na++;
+      const lgn=document.createElement('div'); lgn.className='lgn';
+      lgn.innerHTML='<div class="num">'+l.n+'</div>'+
         '<div class="nom">'+l.nom+(l.sous?' <small>'+l.sous+'</small>':'')+'</div>'+
-        '<button class="st '+st+'" data-i="'+i+'">'+LABEL[st]+'</button>';
+        '<span class="st '+l.st+'">'+LABEL[l.st]+'</span>';
       liste.appendChild(lgn);
     });
-    document.querySelectorAll('.st[data-i]').forEach(b=>{
-      b.addEventListener('click',()=>{
-        const i = +b.dataset.i;
-        const cur = ORDRE.indexOf(etat[i]);
-        etat[i] = ORDRE[(cur+1)%ORDRE.length];
-        sauver(); rendre(); majCompteurs();
-      });
-    });
-  }
-
-  function majCompteurs(){
-    let t=0,c=0,na=0;
-    etat.forEach(s=>{ if(s==='t')t++; else if(s==='c')c++; else na++; });
     document.getElementById('nT').textContent=t;
     document.getElementById('nC').textContent=c;
     document.getElementById('nN').textContent=na;
-    const applicables = LIVRABLES.length - na;
-    const pct = applicables>0 ? Math.round(t/applicables*100) : 0;
-    document.getElementById('barre').style.width = pct+'%';
-    document.getElementById('pct').textContent = pct+' % des livrables applicables transmis ('+t+'/'+applicables+')';
-    horodater();
-  }
+    const app=LIVRABLES.length-na, pct=app>0?Math.round(t/app*100):0;
+    document.getElementById('barre').style.width=pct+'%';
+    document.getElementById('pct').textContent=pct+' % des livrables applicables transmis ('+t+'/'+app+')';
 
-  function horodater(){
-    const now = new Date();
-    const optD = {weekday:'long',day:'2-digit',month:'long',year:'numeric'};
-    const hTxt = now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
-    document.getElementById('majTop').textContent = '🕓 Mise à jour : '+now.toLocaleDateString('fr-FR',optD)+' à '+hTxt;
-    document.getElementById('maj').textContent = 'Mis à jour le '+now.toLocaleDateString('fr-FR',{day:'2-digit',month:'2-digit',year:'numeric'})+' à '+hTxt;
-  }
+    const now=new Date();
+    const hTxt=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    const auto=now.toLocaleDateString('fr-FR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'})+' à '+hTxt;
+    const txt = DATE_MAJ ? DATE_MAJ : auto;
+    document.getElementById('majTop').textContent='🕓 Mise à jour : '+txt;
+    document.getElementById('maj').textContent='Mis à jour : '+txt;
+  })();
 
-  // ===== Bouton copier le point en texte (pour coller dans WhatsApp) =====
   document.getElementById('btnCopie').addEventListener('click',()=>{
-    let t=0,c=0,na=0; etat.forEach(s=>{s==='t'?t++:s==='c'?c++:na++;});
-    const app = LIVRABLES.length-na, pct = app>0?Math.round(t/app*100):0;
-    let txt = "📋 LHSPLA FY27 — Point livrables\n";
-    txt += "Échéance Grants : 14/07/2026 19H59 GMT\n";
-    txt += "Avancement : "+pct+"% ("+t+"/"+app+")  ✅"+t+" 🟠"+c+" ⚪"+na+"\n\n";
-    LIVRABLES.forEach((l,i)=>{
-      const e = etat[i]==='t'?'✅':etat[i]==='c'?'🟠':'⚪';
-      txt += e+" "+l.n+". "+l.nom+"\n";
+    let t=0,c=0,na=0; LIVRABLES.forEach(l=>{l.st==='t'?t++:l.st==='c'?c++:na++;});
+    const app=LIVRABLES.length-na, pct=app>0?Math.round(t/app*100):0;
+    const now=new Date();
+    const s=Math.floor((new Date(Date.UTC(2026,6,14,19,59,59))-now)/1000);
+    const jRest=Math.max(0,Math.floor(s/86400));
+    let txt="📋 *LHSPLA FY27 — Point livrables*\n";
+    txt+="🗓️ Échéance Grants : 14/07/2026 19H59 GMT (J-"+jRest+")\n";
+    txt+="📊 Avancement : "+pct+"% ("+t+"/"+app+")  ✅"+t+" 🟠"+c+" ⚪"+na+"\n";
+    txt+="🔄 Circuit : entités → GOR Damas BROU (avis) → Grants\n\n";
+    LIVRABLES.forEach(l=>{
+      const e=l.st==='t'?'✅':l.st==='c'?'🟠':'⚪';
+      txt+=e+" "+l.n+". "+l.nom+"\n";
     });
-    txt += "\nGOR Damas BROU pour avis → Grants pour soumission";
+    const hTxt=now.toLocaleTimeString('fr-FR',{hour:'2-digit',minute:'2-digit'});
+    txt+="\n🕓 MAJ : "+now.toLocaleDateString('fr-FR')+" à "+hTxt;
     navigator.clipboard.writeText(txt).then(()=>{
-      const b=document.getElementById('btnCopie'); const o=b.textContent;
-      b.textContent="✅ Copié !"; setTimeout(()=>b.textContent=o,1600);
-    }).catch(()=>{ alert(txt); });
+      const b=document.getElementById('btnCopie'),o=b.textContent;
+      b.textContent="✅ Copié ! Collez dans WhatsApp"; setTimeout(()=>b.textContent=o,2000);
+    }).catch(()=>{ prompt("Copiez ce texte :",txt); });
   });
 
-  document.getElementById('btnReset').addEventListener('click',()=>{
-    if(confirm("Réinitialiser tous les statuts à leur valeur d'origine ?")){
-      etat = LIVRABLES.map(l=>l.st); sauver(); rendre(); majCompteurs();
-    }
-  });
-
-  // ===== Rétro-compteur live =====
   (function(){
-    const cible = new Date(Date.UTC(2026,6,14,19,59,59));
+    const cible=new Date(Date.UTC(2026,6,14,19,59,59));
     const jj=document.getElementById('jj');
     const uJ=document.getElementById('uJ'),uH=document.getElementById('uH'),uM=document.getElementById('uM'),uS=document.getElementById('uS');
     const p2=n=>String(n).padStart(2,'0');
     function tick(){
       const d=cible-new Date();
-      if(d<=0){ jj.textContent="⏰ Échéance atteinte"; jj.style.color='var(--rouge)';
-        uJ.textContent=uH.textContent=uM.textContent=uS.textContent='00'; clearInterval(tm); return; }
+      if(d<=0){jj.textContent="⏰ Échéance atteinte";jj.style.color='var(--rouge)';
+        uJ.textContent=uH.textContent=uM.textContent=uS.textContent='00';clearInterval(tm);return;}
       const s=Math.floor(d/1000);
       jj.textContent='J-'+Math.floor(s/86400);
-      uJ.textContent=p2(Math.floor(s/86400));
-      uH.textContent=p2(Math.floor((s%86400)/3600));
-      uM.textContent=p2(Math.floor((s%3600)/60));
-      uS.textContent=p2(s%60);
+      uJ.textContent=p2(Math.floor(s/86400));uH.textContent=p2(Math.floor((s%86400)/3600));
+      uM.textContent=p2(Math.floor((s%3600)/60));uS.textContent=p2(s%60);
     }
     tick(); const tm=setInterval(tick,1000);
   })();
-
-  // Init
-  rendre(); majCompteurs();
 </script>
 
 </body>
