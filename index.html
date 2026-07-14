@@ -88,9 +88,9 @@
 </header>
 
 <div class="compteur">
-  <div class="jj" id="jj">J-—</div>
-  <div class="lbl">avant soumission Grants</div>
-  <div class="retro" id="retro">
+  <div class="jj" id="jj" style="color:var(--vert);font-size:2.4rem">✅ Dossier soumis</div>
+  <div class="lbl" style="color:var(--vert)">Soumission MyGrants effectuée</div>
+  <div class="retro" id="retro" style="display:none">
     <div class="unite"><span class="val" id="uJ">00</span><span class="cle">Jours</span></div>
     <div class="sep">:</div>
     <div class="unite"><span class="val" id="uH">00</span><span class="cle">Heures</span></div>
@@ -99,14 +99,14 @@
     <div class="sep">:</div>
     <div class="unite"><span class="val sec" id="uS">00</span><span class="cle">Sec</span></div>
   </div>
-  <div class="date">Échéance : mardi 14 juillet 2026 · 19H59 GMT</div>
+  <div class="date">Soumis au DoS via MyGrants · échéance respectée (14/07/2026 · 19H59 GMT)</div>
 
   <div class="circuit">
     <div class="etape actif">Livrables entités<span class="r">Transmis ce jour</span></div>
     <span class="fleche">→</span>
-    <div class="etape actif">GOR Damas BROU<span class="r">Pour avis</span></div>
+    <div class="etape actif">GOR Damas BROU<span class="r">Avis reçu</span></div>
     <span class="fleche">→</span>
-    <div class="etape">Grants<span class="r">Soumission</span></div>
+    <div class="etape actif">MyGrants<span class="r">✅ Soumis</span></div>
   </div>
 
   <div class="barre-wrap"><div class="barre" id="barre" style="width:0%"></div></div>
@@ -152,7 +152,7 @@
     {n:2,  nom:"Proposal Narrative", sous:"≤ 10 pages", st:"t"},
     {n:3,  nom:"M&E Plan / AMELP", sous:"≤ 4 pages", st:"t"},
     {n:4,  nom:"SF-424 / 424A / 424B", sous:"", st:"t"},
-    {n:5,  nom:"Detailed Program Budget", sous:"Excel — template à confirmer (GOR)", st:"c"},
+    {n:5,  nom:"Detailed Program Budget", sous:"Excel", st:"t"},
     {n:6,  nom:"Budget Justification Narrative", sous:"", st:"t"},
     {n:7,  nom:"Annual Work Plan (AWP) FY27", sous:"", st:"t"},
     {n:8,  nom:"Milestone Plan", sous:"Supprimé — bascule cost-reimbursable", st:"na"},
@@ -200,10 +200,10 @@
     const now=new Date();
     const s=Math.floor((new Date(Date.UTC(2026,6,14,19,59,59))-now)/1000);
     const jRest=Math.max(0,Math.floor(s/86400));
-    let txt="📋 *LHSPLA FY27 — Point livrables*\n";
-    txt+="🗓️ Échéance Grants : 14/07/2026 19H59 GMT (J-"+jRest+")\n";
-    txt+="📊 Avancement : "+pct+"% ("+t+"/"+app+")  ✅"+t+" 🟠"+c+" ⚪"+na+"\n";
-    txt+="🔄 Circuit : entités → GOR Damas BROU (avis) → Grants\n\n";
+    let txt="📋 *LHSPLA FY27 — Dossier soumis* ✅\n";
+    txt+="🗓️ Soumis au DoS via MyGrants — échéance 14/07/2026 19H59 GMT respectée\n";
+    txt+="📊 "+t+"/"+app+" livrables transmis ("+pct+"%)  ✅"+t+" 🟠"+c+" ⚪"+na+"\n";
+    txt+="🔄 Circuit : entités → GOR Damas BROU (avis) → MyGrants (soumis)\n\n";
     LIVRABLES.forEach(l=>{
       const e=l.st==='t'?'✅':l.st==='c'?'🟠':'⚪';
       txt+=e+" "+l.n+". "+l.nom+"\n";
@@ -216,22 +216,7 @@
     }).catch(()=>{ prompt("Copiez ce texte :",txt); });
   });
 
-  (function(){
-    const cible=new Date(Date.UTC(2026,6,14,19,59,59));
-    const jj=document.getElementById('jj');
-    const uJ=document.getElementById('uJ'),uH=document.getElementById('uH'),uM=document.getElementById('uM'),uS=document.getElementById('uS');
-    const p2=n=>String(n).padStart(2,'0');
-    function tick(){
-      const d=cible-new Date();
-      if(d<=0){jj.textContent="⏰ Échéance atteinte";jj.style.color='var(--rouge)';
-        uJ.textContent=uH.textContent=uM.textContent=uS.textContent='00';clearInterval(tm);return;}
-      const s=Math.floor(d/1000);
-      jj.textContent='J-'+Math.floor(s/86400);
-      uJ.textContent=p2(Math.floor(s/86400));uH.textContent=p2(Math.floor((s%86400)/3600));
-      uM.textContent=p2(Math.floor((s%3600)/60));uS.textContent=p2(s%60);
-    }
-    tick(); const tm=setInterval(tick,1000);
-  })();
+  /* Rétro-compteur désactivé : soumission MyGrants effectuée. */
 </script>
 
 </body>
